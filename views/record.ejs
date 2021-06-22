@@ -10,7 +10,6 @@
 
           <div class="col-sm-6">
             <a href="#addCsv" class="btn btn-info" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Upload CSV</span></a>
-            <a href="/download" download="csvFile" class="btn btn-success"><i class="material-icons">&#xe884;</i> <span>Download</span></a>
           </div>
       </div>
   </header>
@@ -33,10 +32,6 @@
                       <% for (let data in row ) { %>
                         <td><%= row[data] %></td>
                         <%}%>
-                      <td>
-                          <a href="#editCsv" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>Edit</a>
-                          <a href="#deleteCsv" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>Delete</a>
-                      </td>
                     </tr>
                       <%})%>
                     <% } else { %>
@@ -74,61 +69,5 @@
       </div>
     </div>
   </div>
-
-  <!-- Edit data -->
-  <div id="editCsv" class="modal fade">
-      <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Edit Record</h4>
-            </div>
-              <form>
-                  <div class="modal-body">
-                      <div class="form-group">
-                          <label for="age">Age</label>
-                          <input type="text" class="form-control" name="age" />
-                      </div>
-
-                      <div class="form-group">
-                          <label for="name">Name</label>
-                          <input type="text" class="form-control" name="name" />
-                      </div>
-
-                      <div class="form-group">
-                          <label for="state">State</label>
-                          <input type="text" class="form-control" name="state" />
-                      </div>
-                  </div>
-
-                  <div class="modal-footer">
-                      <input type="button" class="btn btn-danger"  data-dismiss="modal" value="Cancel"/>
-                      <input type="submit" class="btn btn-success" value="Save"/>
-                  </div>
-              </form>
-          </div>
-      </div>
-  </div>
-
-  <!--  -->
-  <div id="deleteCsv" class="modal fade">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form>
-          <div class="modal-header">
-            <h3 class="modal-title">Delete Record</h3>
-          </div>
-
-          <div class="modal-body">
-            <p>Are you sure you want to delete?</p>
-          </div>
-
-          <div class="modal-footer">
-            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
-            <input type="submit" class="btn btn-danger" value="Delete" />
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-    <%- include('./components/bottom.ejs') %>
+  
+<%- include('./components/bottom.ejs') %>
