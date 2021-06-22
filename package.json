@@ -1,0 +1,25 @@
+{
+  "name": "csv-harperdb",
+  "version": "1.0.0",
+  "description": "Import CSV file to harperDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "HarperDB",
+    "CSV"
+  ],
+  "author": "Pascal",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "harperive": "^2.0.1",
+    "multer": "^1.4.2",
+    "neat-csv": "^6.0.1"
+  }
+}
