@@ -19,18 +19,6 @@ app.use(express.urlencoded({extended: false}))
 // Form page (index)
 app.get('/', async (req, res) => { 
 
-  try{
-    const data = await db.createTable({
-      schema: process.env.SCHEMA,
-      table: 'csv',
-      hashAttribute: process.env.HASH_ATTRIBUTE
-    })
-  
-    console.log(data)
-  }catch(e){
-    console.log(e)
-  }
-
   res.render('index',{
     pageTitle: "Form"
   })
@@ -48,7 +36,7 @@ app.get('/record', (req, res) => {
     searchAttribute: process.env.HASH_ATTRIBUTE,
     attributes: ["*"]
   }, (err, response) => {
-    if (err) return res.status(500).json(err)
+    if (err) return res.status(500).json({message: "Operation failed"})
 
     console.log(response.data)
 
@@ -92,22 +80,18 @@ app.post('/upload', upload.single('file'), async (req, res) => {
       schema: process.env.SCHEMA,
       table: 'csv'
     })
-
-    console.log(data)
   }catch(e){
-    console.log(e)
+    console.log('Failed to drop table')
   }
 
   try{
     const data = await db.createTable({
       schema: process.env.SCHEMA,
       table: 'csv',
-      hashAttribute: process.env.HASH_ATTRIBUTE
+      hashAttribute: '_id'
     })
-  
-    console.log(data)
   }catch(e){
-    console.log(e)
+    console.log('Failed to create table')
   }
 
 
@@ -126,9 +110,6 @@ app.post('/upload', upload.single('file'), async (req, res) => {
       res.redirect(302, "/record")
     })
   })
-
-  console.log(req.body)
-  console.log(req.file)
 })
 
 

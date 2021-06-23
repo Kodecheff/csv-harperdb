@@ -26,12 +26,12 @@
               </div>
               <table class="table table-striped table-hover">
                 <% if(records.length > 0) { %>
-                  <% records.forEach(row => { %>                  
+                  <% records.forEach(row => { %>
                   <tbody>
                     <tr>
                       <% for (let data in row ) { %>
                         <td><%= row[data] %></td>
-                        <%}%>
+                      <%}%>
                     </tr>
                       <%})%>
                     <% } else { %>
@@ -69,5 +69,5 @@
       </div>
     </div>
   </div>
-  
+ 
 <%- include('./components/bottom.ejs') %>

@@ -38,9 +38,3 @@ table.table td a {
 	outline: none !important;
   margin-right: 15px;
 }
-table.table td a.edit {
-	color: #566787;
-}
-table.table td a.delete {
-	color: #F44336;
-}
