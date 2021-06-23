@@ -33,7 +33,7 @@ app.get('/record', (req, res) => {
     schema: process.env.SCHEMA,
     table: "csv",
     searchValue: "*",
-    searchAttribute: process.env.HASH_ATTRIBUTE,
+    searchAttribute: '_id',
     attributes: ["*"]
   }, (err, response) => {
     if (err) return res.status(500).json({message: "Operation failed"})
