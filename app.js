@@ -1,7 +1,7 @@
 require('dotenv').config()
 const fs = require('fs')
 const path = require('path')
-const csv = require('fast-csv')
+const neatCsv = require('neat-csv')
 const express = require('express');
 const multer = require('multer')
 const app = express()
@@ -92,27 +92,20 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     console.log('Failed to create table')
   }
 
-    let csv_data = []
-
-  fs.createReadStream(__dirname + '/public/assets/uploads/' + req.file.filename)
-    .pipe(csv.parse({headers: true}))
-    .on("error", (error) => {
-      throw error.message;
-    })
-    .on("data", (row) => {
-      csv_data.push(row);
-    })
-    .on("end", () => {
+  fs.readFile(req.file.path, async (err, data) => {
+    const csvData = await neatCsv(data)
+  
+      // insert file
       db.insert({
         schema: process.env.SCHEMA,
         table: "csv",
-        records: csv_data
+        records: csvData
       }, (err, response) => {
         if (err) return res.status(500).json(err)
   
         res.redirect(302, "/record")
       })
-    });
+    })
 })
 
 
