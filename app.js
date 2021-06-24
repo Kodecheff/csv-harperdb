@@ -1,7 +1,7 @@
 require('dotenv').config()
 const fs = require('fs')
 const path = require('path')
-const neatCsv = require('neat-csv')
+const csv = require('fast-csv')
 const express = require('express');
 const multer = require('multer')
 const app = express()
@@ -36,7 +36,7 @@ app.get('/record', (req, res) => {
     searchAttribute: '_id',
     attributes: ["*"]
   }, (err, response) => {
-    if (err) return res.status(500).json({message: "Operation failed"})
+    if (err) return res.status(500).json({message: "Connection failed"})
 
     console.log(response.data)
 
@@ -51,7 +51,7 @@ app.get('/record', (req, res) => {
 // configure multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public')
+    cb(null, __dirname + '/public/assets/uploads')
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -69,8 +69,6 @@ const fileFilter = function(req, file, cb) {
 
 // Calling multer function
 const upload = multer({storage: storage, fileFilter: fileFilter})
-
-
 
 // upload data to database
 app.post('/upload', upload.single('file'), async (req, res) => {
@@ -94,22 +92,27 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     console.log('Failed to create table')
   }
 
+    let csv_data = []
 
-  // read file from system
-  fs.readFile(req.file.path, async (err, data) => {
-  const csvData = await neatCsv(data)
-
-    // insert file
-    db.insert({
-      schema: process.env.SCHEMA,
-      table: "csv",
-      records: csvData
-    }, (err, response) => {
-      if (err) return res.status(500).json(err)
-
-      res.redirect(302, "/record")
+  fs.createReadStream(__dirname + '/public/assets/uploads/' + req.file.filename)
+    .pipe(csv.parse({headers: true}))
+    .on("error", (error) => {
+      throw error.message;
     })
-  })
+    .on("data", (row) => {
+      csv_data.push(row);
+    })
+    .on("end", () => {
+      db.insert({
+        schema: process.env.SCHEMA,
+        table: "csv",
+        records: csv_data
+      }, (err, response) => {
+        if (err) return res.status(500).json(err)
+  
+        res.redirect(302, "/record")
+      })
+    });
 })
 
 
